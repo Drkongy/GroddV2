@@ -14,7 +14,9 @@ client = discord.Client()
 @client.event
 async def on_ready():
     print(f'[Client] Logged in as {client.user.name}')
-    await client.change_presence(activity=discord.Game(name='!help'))
+    # await client.change_presence(activity=discord.Game(name='!help'))
+    #watching x users in x servers activity
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f' {len(client.users)} Monkis in {len(client.guilds)} servers'))
     print(f'[Client] Loaded {len(client.guilds)} guilds')
     print(f'[Client] Loaded {len(client.emojis)} emojis')
     print(f'[Client] Loaded {len(client.users)} users')
