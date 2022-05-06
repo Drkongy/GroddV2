@@ -1,0 +1,6 @@
+*.txt
+config.py
+
+__pycache__/
+Commands/__pycache__
+Databases/
