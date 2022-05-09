@@ -12,9 +12,9 @@ class Command:
             embed = discord.Embed(title='Commands: ', color=0x00ff00)
             embed.set_author(name='Help', icon_url=message.author.avatar_url)
             for command in os.listdir('./Commands'):
-                if command.endswith('.py') and command != 'CommandHandler.py':
+                if command.endswith('.py') and command != 'CommandHandler.py' and command != 'restart.py' and command != 'help.py' and command != 'cool.py':
                     command = command.split('.')[0]
-                    embed.add_field(name=command, value=importlib.import_module(f"Commands.{command}").Command.description, inline=False)
+                    embed.add_field(name=command, value=importlib.import_module(f"Commands.{command}").Command.description, inline=True)
             embed.set_footer(text='Made by Zeeshan & Kai')
 
             await message.channel.send(embed=embed)

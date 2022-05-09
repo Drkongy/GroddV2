@@ -19,18 +19,11 @@ class CommandHandler:
             command = command.split('.')[0]
             self.commands[command] = importlib.import_module(f'{self.folder.split("/")[-1]}.{command}').Command
             print(f'[CommandHandler] Loaded {self.commands[command].name}')
-            
-            
-            # cmd = importlib.import_module(f'{self.folder.split("/")[-1]}.{command}') 
-            # self.commands[cmd.Command.name] = cmd.Command
 
 
 
 
 
-
-            
-    
     async def execute_command(self, command, args, message, client, db):
         if command in self.commands:
             await self.commands[command].main(args, message, client, db)
@@ -41,8 +34,14 @@ class CommandHandler:
             await message.channel.send(embed=embed)
 
 
-    async def main(self, args, message, client, db):
+    #make a main fucntion 
+
+    def main(self, args, message, client, db):
         return
+
+    
+
+
 
 
 

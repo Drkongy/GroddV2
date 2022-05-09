@@ -1,53 +1,83 @@
 import discord, config
-from database import Database
 from Commands.CommandHandler import CommandHandler
-from listeners.test import Listener
+from listeners.FunListener import FunListener
+from listeners.logger import Listener
+from lowdb import Low, File
+from Commands import prefix
 
 
-db = Database('./Databases/db.json')
-# Bananas = Database('./Databases/Bananas.json')
+
+
+#declare the prefix class 
+prefixtest = prefix.Command()
+
+# initilizes the Handlers
+logger = Listener()
+fun = FunListener()
 cmd = CommandHandler('./Commands')
+
+#Prints the loaded data.
 cmd.load_comands()
-test = Listener()
+logger.load()
+fun.load()
+
+
+
+
+# logger = Listener()
 client = discord.Client()
+FileAdapter = File('./Databases/db.json')
+db = Low(FileAdapter)
+
+
+
+
+# on when bot joins a server 
+
+@client.event
+async def on_gui_joined(guild):
+    db.set(f'Guilds.${guild.id}.Prefix', '!') # Returns self, so that you can use .write() to write to json
+    db.write() # Writes memory to json
+    print(f'Joined {guild.name}')
+    print(f'{guild.id}')
+
+
 
 @client.event
 async def on_ready():
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f'!help | {len(client.guilds)} Servers'))
     print(f'[Client] Logged in as {client.user.name}')
-    # await client.change_presence(activity=discord.Game(name='!help'))
-    #watching x users in x servers activity
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f' {len(client.users)} Monkis in {len(client.guilds)} servers'))
     print(f'[Client] Loaded {len(client.guilds)} guilds')
     print(f'[Client] Loaded {len(client.emojis)} emojis')
     print(f'[Client] Loaded {len(client.users)} users')
-    return
 
 
-# Message Event for the Command Handler
-# kai best dev :sob: only took one try real!!1!11
+    ##* get id of all the guilds and gives it the default prefix.
+    # for guild in client.guilds:
+    #     #get id of all Users
+    #     db.set(f'Guilds.${guild.id}.Prefix', '!') # Returns self, so that you can use .write() to write to json
+    #     db.write() # Writes memory to json
+    
+    
+
+# Message Event for the Command Handler & ListenerHandler
 @client.event 
 async def on_message(message):
-    # User Info.
-    userid = str(message.author.id)
-    username = str(message.author).split('#')[0]
-    usertag = str(message.author).split('#')[1]
-    
+    prefix = prefixtest.get_prefix(message.guild.id)
     # Command Info.
-    if message.content.startswith(config.PREFIX):
+    args = message.content.split(' ')
+    await logger.main(args, message, client)
+    await fun.main(args, message, client)
+
+    if message.content.startswith(prefix):
         pass
     else:
         return
-    
     command = message.content.split(' ')[0]
-    args = message.content.split(' ')
     args.remove(command)
-    command = command.replace(config.PREFIX, '')
-
-    #await test.main(args, message, client, db)
+    command = command.replace(prefix, '')
     await cmd.execute_command(command, args, message, client, db)
+    return
 
-    if message.content == 'hello':
-        await message.channel.send('Hello!')
-        
+
 client.run(config.TOKEN)
-
