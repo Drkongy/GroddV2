@@ -1,5 +1,6 @@
 import discord, config
 from Commands.CommandHandler import CommandHandler
+from BananaCommands.BananaHandler import BananaHandler
 from listeners.FunListener import FunListener
 from listeners.logger import Listener
 from lowdb import Low, File
@@ -15,9 +16,12 @@ prefixtest = prefix.Command()
 logger = Listener()
 fun = FunListener()
 cmd = CommandHandler('./Commands')
+banana = BananaHandler('./BananaCommands')
+
 
 #Prints the loaded data.
 cmd.load_comands()
+banana.print()
 logger.load()
 fun.load()
 
@@ -80,4 +84,4 @@ async def on_message(message):
     return
 
 
-client.run(config.TOKEN)
+client.run(config.TOKEN) 
