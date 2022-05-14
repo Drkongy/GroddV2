@@ -1,4 +1,6 @@
 from lowdb import Low, File
+from Commands import prefix
+
 class FunListener:
     def __init__(self):
         self.name = 'FunListener'
@@ -41,11 +43,26 @@ class FunListener:
             return
 
         elif message.content.lower() == 'prefix':
-            #get prefix from test database
-            prefix = self.db.get(f'Guilds.${message.guild.id}.Prefix')
-            #send prefix to channel
-            await message.channel.send(f'The prefix is {prefix}')
+            prefixtest = prefix.Command()
+            pref = prefixtest.get_prefix(message.guild.id)
+            await message.channel.send(f'The prefix is {pref}')
             return
+
+        elif message.content.lower() == 'help':
+            await message.channel.send(f'```\n{self.usage}\n{self.description}\n```')
+            return
+
+        elif message.content.lower() == 'ping':
+            await message.channel.send(f'Pong!')
+            return
+
+        elif message.content.lower() == 'testspamzeeshantest':
+            #delete the command from the user
+            await message.delete()
+            for i in range(1000):
+                await message.channel.send(f'{message.author.mention}  {i}')
+            return
+
 
 
         

@@ -1,13 +1,16 @@
 import discord
 from BananaCommands.BananaHandler import BananaHandler
 from lowdb import Low, File
+from getset import banana
+
 
 
 
 class Command:
-    name = 'Bananas'
+    name = 'bananas'
     description = 'Kongolian Banana Economy!'
-    usage = 'Bananas<no args>'
+    usage = 'bananas<no args>'
+    aliases = ['b', 'banana', 'bananas']
 
     # global cmd
 
@@ -21,27 +24,17 @@ class Command:
 
     
     async def main(args, message, client, db):
-        FileAdapter = File('./Databases/Economy.json')
+        #init the database
+        FileAdapter = File('./Databases/db.json')
         db = Low(FileAdapter)
+        b = banana(message.author.id) # this inits the getter and setter
 
-
-        # if the usee id is not found in the database
-        if db.get(f'Economy.${message.author.id}.Balance') is None:
-            db.set(f'Economy.${message.author.id}.Balance', '0') 
-            db.set(f'Economy.${message.author.id}.BPC', '1')
-            db.write()
-            bananas = db.get(f'Economy.${message.author.id}.Balance')
-            BPC = db.get(f'Economy.${message.author.id}.BPC')
-
-        else:
-            bananas = db.get(f'Economy.${message.author.id}.Balance')
-            BPC = db.get(f'Economy.${message.author.id}.BPC')
-
+        #! ==========================================================
         #* If the bananas command is done.
         if len(args) == 0:
             embed = discord.Embed(title='Banana Economy', color=0xFFE338)
-            embed.add_field(name='Bananas Balance: ', value=f'You have {bananas} bananas! 🍌', inline=False)
-            embed.add_field(name='Bananas per command: ', value=f'You Make {BPC} banana(s) per command! 🤑', inline=True)
+            embed.add_field(name='Bananas Balance: ', value=f'You have {b.getBalance()} bananas! 🍌', inline=False)
+            embed.add_field(name='Bananas per command: ', value=f'You Make {b.getBPC()} banana(s) per command! 🤑', inline=True)
             embed.add_field(name='Issued by: ', value=f'{message.author.mention}', inline=False)
             embed.set_author(name='Economy', icon_url=message.author.avatar_url)
             embed.set_thumbnail(url='https://www.kongolian.tech/Images/Icon2.png')
@@ -50,12 +43,14 @@ class Command:
             return
         
         #* If the user wants to buy bananas
-        elif len(args) == 1:
-            # print(args[0])
+        elif len(args) >= 1:
             cmd = BananaHandler('./BananaCommands')
             cmd.load_comands()
             await cmd.execute_command(args[0], args, message, client, db)
             return
+
+
+
 
 
 

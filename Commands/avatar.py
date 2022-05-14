@@ -3,6 +3,8 @@ class Command:
     name = 'avatar'
     description = 'Shows the avatar of the user'
     usage = 'avatar<user>'
+    aliases = ['av']
+    
 
 
     async def main(args, message, client, db):

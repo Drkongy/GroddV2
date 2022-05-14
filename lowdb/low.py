@@ -27,3 +27,9 @@ class Low:
     
     def write(self) -> None:
         self.stream.write()
+
+
+    #checks if a key exists
+    def has(self, key: str) -> bool:
+        return pydash.has(self.stream.read(), key)
+        

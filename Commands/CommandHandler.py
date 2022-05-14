@@ -25,6 +25,16 @@ class CommandHandler:
 
 
     async def execute_command(self, command, args, message, client, db):
+        try:
+            for command_name in self.commands:
+                for alias in self.commands[command_name].aliases:
+                    if command in self.commands[command_name].aliases:
+                        command = self.commands[command_name].name
+                        break
+        except:
+            pass
+
+
         if command in self.commands:
             await self.commands[command].main(args, message, client, db)
         else:

@@ -56,11 +56,12 @@ async def on_ready():
     print(f'[Client] Loaded {len(client.users)} users')
 
 
-    ##* get id of all the guilds and gives it the default prefix.
+    #* get id of all the guilds and gives it the default prefix.
     # for guild in client.guilds:
     #     #get id of all Users
     #     db.set(f'Guilds.${guild.id}.Prefix', '!') # Returns self, so that you can use .write() to write to json
     #     db.write() # Writes memory to json
+    #     print(f'Joined {guild.name}')
     
     
 

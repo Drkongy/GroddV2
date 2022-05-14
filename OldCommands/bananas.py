@@ -97,21 +97,6 @@ class Command:
                 embed.add_field(name='Mandrill (5000 BPC) ', value=f'Cost: 20 Banana(s)', inline=True)
                 embed.add_field(name='Gelada (10000 BPC) ', value=f'Cost: 20 Banana(s)', inline=True)
                 embed.add_field(name='Gorilla (25000 BPC) ', value=f'Cost: 20 Banana(s)', inline=True)
-
-
-
-
-
-
-
-
-
-                
-
-
-
-
-
                 embed.add_field(name='Issued by: ', value=f'{message.author.mention}', inline=False)
                 embed.set_author(name='Economy', icon_url=message.author.avatar_url)
                 embed.set_thumbnail(url='https://www.kongolian.tech/Images/Icon2.png')
